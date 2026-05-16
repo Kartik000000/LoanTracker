@@ -20,6 +20,7 @@ namespace LoanTracker.Data
         // INTERVIEW: "What is DbSet in EF Core?"
         // Answer: DbSet<T> maps to a database table - used to query and save records
         public DbSet<LoanApplication> LoanApplications { get; set; }
+        public DbSet<User> Users { get; set; }
         // Configures the database schema
         // INTERVIEW: "What is OnModelCreating in EF Core?"
         // Answer: It's used to configure entity mappings, relationships, and column types
@@ -32,6 +33,15 @@ namespace LoanTracker.Data
         modelBuilder.Entity<LoanApplication>()
         .Property(x => x.LoanAmount)
         .HasColumnType("decimal(18,2)");
+
+            modelBuilder.Entity<User>()
+               .HasIndex(x => x.Username)
+               .IsUnique();
+
+            modelBuilder.Entity<User>()
+                .HasIndex(x => x.Email)
+                .IsUnique();
+
         }
   }
     

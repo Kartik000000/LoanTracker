@@ -1,11 +1,13 @@
 // Controllers/LoanApplicationController.cs
 using LoanTracker.Data;
 using LoanTracker.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace LoanTracker.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class LoanApplicationController : ControllerBase
