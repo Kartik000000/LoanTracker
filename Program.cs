@@ -1,3 +1,5 @@
+using LoanTracker.Data;
+using Microsoft.EntityFrameworkCore;
 // Program.cs - Entry point of the ASP.NET Core application
 // In .NET 6+, this replaced the old Startup.cs + Program.cs two-file setup
 
@@ -9,6 +11,8 @@ var builder = WebApplication.CreateBuilder(args);
 // INTERVIEW: "What is Swagger?" - It auto-generates API documentation
 // so other developers can see and test your endpoints without reading code
 builder.Services.AddOpenApi();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 // AddControllers() registers the MVC controller pipeline
 // INTERVIEW: "What is the difference between AddControllers() vs AddMvc()?"
@@ -16,6 +20,11 @@ builder.Services.AddOpenApi();
 // AddMvc() = full MVC with views (for web pages)
 // AddRazorPages() = for Razor page apps
 builder.Services.AddControllers();
+// Register DbContext with SQL Server
+// INTERVIEW: "What does AddDbContext do?"
+// Answer: Registers AppDbContext in the DI container so controllers can use it
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // builder.Build() finalizes the dependency injection container
 // and creates the WebApplication instance
@@ -33,6 +42,8 @@ if (app.Environment.IsDevelopment())
     // INTERVIEW: "How do you manage environments in .NET?"
     // Answer: appsettings.Development.json, ASPNETCORE_ENVIRONMENT variable
     app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 // Redirects HTTP requests to HTTPS for security
